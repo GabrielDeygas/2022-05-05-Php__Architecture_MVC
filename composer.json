@@ -1,0 +1,12 @@
+{
+    "name": "lidem/proj-php-obj",
+    "autoload": {
+        "psr-4": {
+            "App\\": "App/",
+            "Vroumvroum\\": "Vroumvroum/"
+        }
+    },
+    "require": {
+        "miladrahimi/phprouter": "5.*"
+    }
+}

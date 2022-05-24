@@ -1,0 +1,275 @@
+-- MySQL dump 10.13  Distrib 5.7.29, for Linux (x86_64)
+--
+-- Host: localhost    Database: lamp
+-- ------------------------------------------------------
+-- Server version	5.7.29
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES UTF8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `addresses` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `country` varchar(128) NOT NULL,
+  `city` varchar(128) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (1,'France','Paris','1 rue du cul'),(2,'Suisse','Perpignan','2 rue de la queue'),(3,'France','Berne','3 rue du doigt'),(4,'France','Montpellier','4 rue du patre');
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dates`
+--
+
+DROP TABLE IF EXISTS `dates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `dates` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dates`
+--
+
+LOCK TABLES `dates` WRITE;
+/*!40000 ALTER TABLE `dates` DISABLE KEYS */;
+/*!40000 ALTER TABLE `dates` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `equipments`
+--
+
+DROP TABLE IF EXISTS `equipments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `equipments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `equipment` varchar(128) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `equipments`
+--
+
+LOCK TABLES `equipments` WRITE;
+/*!40000 ALTER TABLE `equipments` DISABLE KEYS */;
+INSERT INTO `equipments` VALUES (1,'Cheminée'),(2,'Piscine'),(3,'Hamac'),(4,'Baignoire'),(5,'Terrain de tennis');
+/*!40000 ALTER TABLE `equipments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `favs`
+--
+
+DROP TABLE IF EXISTS `favs`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `favs` (
+  `favs_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL,
+  PRIMARY KEY (`favs_id`),
+  KEY `favs_user_id_fk` (`user_id`),
+  KEY `favs_room_id_fk` (`room_id`),
+  CONSTRAINT `favs_room_id_fk` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
+  CONSTRAINT `favs_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `favs`
+--
+
+LOCK TABLES `favs` WRITE;
+/*!40000 ALTER TABLE `favs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `favs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `link_equipments`
+--
+
+DROP TABLE IF EXISTS `link_equipments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `link_equipments` (
+  `room_id` int(11) NOT NULL,
+  `equipment_id` int(11) NOT NULL,
+  PRIMARY KEY (`room_id`,`equipment_id`),
+  KEY `links_equipments_equipments_id_fk` (`equipment_id`),
+  CONSTRAINT `links_equipments_equipments_id_fk` FOREIGN KEY (`equipment_id`) REFERENCES `equipments` (`id`),
+  CONSTRAINT `links_equipments_room_id_fk` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `link_equipments`
+--
+
+LOCK TABLES `link_equipments` WRITE;
+/*!40000 ALTER TABLE `link_equipments` DISABLE KEYS */;
+INSERT INTO `link_equipments` VALUES (1,1),(2,1),(3,1),(1,2),(2,2),(4,2),(2,3),(4,3),(1,4),(3,4),(4,4),(3,5),(4,5);
+/*!40000 ALTER TABLE `link_equipments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rents`
+--
+
+DROP TABLE IF EXISTS `rents`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rents` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `date_start` date NOT NULL,
+  `date_end` date NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `room_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `rents_user_id_fk` (`user_id`),
+  KEY `rents_room_id_fk` (`room_id`),
+  CONSTRAINT `rents_room_id_fk` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
+  CONSTRAINT `rents_user_id_fk` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rents`
+--
+
+LOCK TABLES `rents` WRITE;
+/*!40000 ALTER TABLE `rents` DISABLE KEYS */;
+INSERT INTO `rents` VALUES (1,'2022-04-29','2022-04-30',2,1),(2,'2022-04-29','2022-04-30',3,2),(3,'2022-04-29','2022-04-30',4,3),(4,'2022-04-29','2022-04-30',5,4),(5,'2022-05-06','2022-05-08',2,2),(6,'2022-05-06','2022-05-08',3,1),(7,'2022-05-13','2022-05-15',5,2),(8,'2022-05-06','2022-05-08',6,3),(9,'2022-05-06','2022-05-08',5,4),(10,'2022-05-13','2022-05-15',4,1);
+/*!40000 ALTER TABLE `rents` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rooms`
+--
+
+DROP TABLE IF EXISTS `rooms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rooms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `path_pics` varchar(255) NOT NULL DEFAULT '',
+  `room_type` int(1) NOT NULL,
+  `surface` int(4) NOT NULL,
+  `description` text,
+  `nb_sleep` int(2) NOT NULL,
+  `price` decimal(5,2) NOT NULL,
+  `owner_id` int(11) NOT NULL,
+  `address_id` int(11) NOT NULL,
+  `is_published` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `room_user_id_fk` (`owner_id`),
+  KEY `room_addresses_id_fk` (`address_id`),
+  CONSTRAINT `room_addresses_id_fk` FOREIGN KEY (`address_id`) REFERENCES `addresses` (`id`),
+  CONSTRAINT `room_user_id_fk` FOREIGN KEY (`owner_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rooms`
+--
+
+LOCK TABLES `rooms` WRITE;
+/*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
+INSERT INTO `rooms` VALUES (1,'chemin1',1,60,'Maison bleue',3,60.00,1,1,1),(2,'chemin2',2,50,'Chambre Jaune',2,40.00,1,2,1),(3,'chemin3',3,40,'Chambre commune',5,20.00,1,3,1),(4,'chemin4',1,60,'Maison rouge',2,69.00,1,4,1);
+/*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nickname` varchar(45) NOT NULL,
+  `password` varchar(128) NOT NULL,
+  `mail` varchar(200) NOT NULL,
+  `user_type` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (1,'toto','toto','toto@toto.com','2'),(2,'tata','tata','tata@tata.com','1'),(3,'tutu','tutu','tutu@tutu.com','1'),(4,'titi','titi','titi@titi.com','1'),(5,'tete','tete','tete@tete.com','1'),(6,'trotro','trotro','trotro@trotro.com','2');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `user_infos`
+--
+
+DROP TABLE IF EXISTS `user_infos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user_infos` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `first_name` varchar(128) NOT NULL,
+  `last_name` varchar(128) NOT NULL,
+  `address` varchar(200) NOT NULL,
+  `phone` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_infos`
+--
+
+LOCK TABLES `user_infos` WRITE;
+/*!40000 ALTER TABLE `user_infos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `user_infos` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2022-05-01 11:26:44
